@@ -1,0 +1,27 @@
+@startuml
+start
+:小程序;
+:配置(组织中心);
+if (收银模式/OMP模式) then (收银模式)
+  :OSS(中台);
+  :组织信息/菜品;
+else (omp模式)
+  :收银;
+  :组织信息/菜品;
+endif
+:下单;
+if (收银模式/OMP模式) then (收银模式)
+  :OSS(中台);
+else (omp模式)
+  :收银;
+endif
+:预结;
+:支付完成;
+if (收银模式/OMP模式) then (收银模式)
+  :OSS(中台);
+else (omp模式)
+  :收银;
+endif
+:订单;
+end
+@enduml

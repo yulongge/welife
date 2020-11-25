@@ -1,0 +1,46 @@
+@startuml
+
+box "微生活"
+participant WelifeServer
+end box
+
+box "点餐"
+participant Server
+end box
+
+授权逻辑 -> Server: 授权信息
+
+基础信息 -> OSS:中台同步到OSS，基础信息: 门店信息，聚合页装修配置
+
+会员信息 -> WelifeServer: 会员信息
+
+菜品信息 -> OSS: oss拉取菜品
+
+订单 -> 中台: 下单, 订单信息, 取消订单,查询桌台是否有单, 退款对接中台
+
+支付充值 -> Server: 支付, 充值, 对接点餐
+
+预点餐 -> 中台: 中台管理预点餐
+
+城市列表 -> 中台: 从中台直接拉取
+
+劵信息 -> WelifeServer: 微生活直接拉取劵信息
+
+手机号相关 -> Server: 绑定手机号，发送验证码，获取手机号从点餐获取
+
+门店忙闲状态 -> 中台: 实时返回门店的繁忙状态 ？
+
+
+
+
+
+
+
+box "中台"
+participant 中台
+end box
+
+box "OSS"
+participant OSS
+end box
+@enduml
