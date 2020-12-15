@@ -1,0 +1,11 @@
+@startuml
+
+box "重构版本"
+participant Min_Mall
+end box
+
+Min_Mall -> 小程序包: 生成小程序包
+
+小程序包 -> 小程序: 作为子包嵌入
+
+@enduml

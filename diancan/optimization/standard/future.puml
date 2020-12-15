@@ -1,0 +1,27 @@
+@startuml
+start
+:小程序;
+:聚合页;
+#HotPink:OSS;
+note left: 收银在oss上维护桌台信息
+if (桌台有单) then (拉取订单)
+  :收银;
+  :订单详情;
+  note left: 订单是否同步到oss？
+else (拉取聚合页配置)
+  #HotPink:OSS;
+  note right: 小程序后台把聚合页配置同步到oss
+  :聚合页;
+endif
+:点餐;
+#HotPink:OSS;
+note left: 收银把菜品同步到OSS,供拉取菜品
+:下单;
+:收银;
+note right: 预结	 
+:支付完成;
+:收银;
+note left: 拉取订单详情
+:订单详情;
+end
+@enduml

@@ -1,0 +1,165 @@
+@startuml
+note over 聚合页: components api [0.7s]
+聚合页 --> Server: 获取商户自定义配置
+note over 聚合页: booking api [0.4s]
+聚合页 --> Server: 获取预点餐配置
+note over 聚合页: booking/detail api [0.4s]
+聚合页 --> Server: 预点餐购物车详细数据
+note over 聚合页: getMemberInfo api [0.5s]
+聚合页 --> Server: 获取会员信息
+note over 聚合页: queryTable api [0.7~0.8s]
+聚合页 --> Server: 获取桌台信息，桌台是否有订单
+note over 聚合页: getbuinessid api [0.3s]
+聚合页 --> Server: 获取商户信息，商户bid
+note over 聚合页: booking/config api [0.4s]
+聚合页 --> Server: 就餐人数，时间等配置信息
+
+box "点 餐 首 页( 同 一 个 页 面)" #LightBlue
+	participant 堂食
+	participant 外卖
+end box
+
+聚合页 -> 堂食: 堂食点餐
+note over 堂食: index api [0.7s]
+堂食 --> Server: 获取点餐首页配置信息
+note over 堂食: booking/detail api [0.4s]
+堂食 --> Server: 预点餐购物车详细数据
+note over 堂食: oss dishes json
+堂食 --> OSS: 获取oss菜品数据
+note over 堂食: oss clearDish json
+堂食 --> OSS: 获取oss估清菜品数据
+note over 堂食: user/sendCoupons api [0.7s]
+堂食 --> Server: 发劵，劵推广
+
+聚合页 -> 外卖: 外卖点餐
+note over 外卖: index api [0.7s]
+外卖 --> Server: 获取点餐首页配置信息
+note over 外卖: oss dishes json
+外卖 --> OSS: 获取oss菜品数据
+note over 外卖: oss clearDish json
+外卖 --> OSS: 获取oss估清菜品数据
+
+堂食 -> 核单页: 下单
+外卖 -> 核单页: 下单
+
+note over 核单页: bindPhone api [0.05]
+核单页 --> Server: 下单前，绑定手机号
+note over 核单页: placeOrder api [0.7s]
+核单页 --> Server: 下单
+note over 核单页: booking/cancel api [0.4s]
+核单页 --> Server: 取消预点餐订单
+note over 核单页: addressinfo api [0.4s]
+核单页 --> Server: 收货地址
+note over 核单页: invoiceinfo api [0.4s]
+核单页 --> Server: 获取发票信息
+note over 核单页: userinfo api
+核单页 --> Server: 获取我的信息
+note over 核单页: clearDish api
+核单页 --> OSS: 获取估清数据
+note over 核单页: ecoClearDish api
+核单页 --> OSS: 获取外卖估清
+note over 核单页: booking/config api [0.4s]
+核单页 --> Server: 获取就餐人数，时间等配置信息
+
+
+核单页 -> 订单详情页
+
+note over 订单详情页: getOrderInfo api [0.4s]
+订单详情页 -> Server: 渲染，拉取订单详情
+note over 订单详情页: cancelOrder api [0.4s]
+订单详情页 --> Server: 取消订单
+note over 订单详情页: checkOrder api [0.7s]
+订单详情页 --> Server: 检测订单，是否有变更
+note over 订单详情页: unlockOrder api [0.5s]
+订单详情页 --> Server: 取消支付，解锁
+
+订单详情页 -> 支付页
+
+note over 支付页: pay api [0.6s]
+支付页--> Server: 渲染页面时，拉取支付信息
+note over 支付页: postpay api [1.2s]
+支付页--> Server: 支付
+note over 支付页: discount api [0.5s]
+支付页 --> Server: 预结， 品质收银对接：选劵之后调用预结
+note over 支付页: postcharge api [1s]
+note over 支付页: chargeresult api [0.45s]
+支付页 --> Server: 充值，及获取充值结果
+note over 支付页: bindPhonex api [0.6s]
+支付页 --> Server: 获取手机号
+note over 支付页: unlockOrder api [0.5s]
+支付页 --> Server: 取消支付
+note over 支付页: getOrderInfo api [0.4s]
+支付页 --> Server: 先付直接到支付页，会请求订单详情接口
+note over 支付页: checkOrder api [0.7s]
+支付页 --> Server: 检测订单，是否有变更
+note over 支付页: activies/join api
+支付页 --> Server: 发劵，买一赠一的活动
+note over 支付页: chargelist api [0.8s]
+支付页 --> Server: 获取充值列表
+
+支付页 -> 订单详情页:支付完成/失败
+核单页 -> 订单详情页: 后付/先付
+订单详情页 -> 支付页: 未支付
+
+订单列表 -> 订单详情页: 进入详情
+订单详情页 -> 堂食: 加菜
+
+
+预点餐 -> 选择门店页面: 获取点餐首页数据
+选择门店页面 --> Server: 获取地里位置信息，并获取门店列表
+note over 选择门店页面: shoplist api [0.5s]
+选择门店页面 --> Server: 获取城市列表
+note over 选择门店页面: citylist api [0.4s]
+选择门店页面 --> Server: 选择城市后，根据城市id获取门店列表
+note over 选择门店页面: getshoplistByCid api [0.4s]
+选择门店页面 -> 堂食:进入首页
+
+外卖 -> 评价: 评价入口
+note over 评论: xcxwmds/user/getComment api
+评价 --> ECO: 获取评价列表
+
+外卖 -> 我的资料: 我的资料入口
+note over 我的资料: userInfo api
+我的资料 --> Server: 获取我的资料数据
+
+我的资料 -> 我的劵: 我的劵入口
+我的资料 -> 订单列表: 订单入口
+
+我的资料 -> 收货地址: 收货地址入口
+note over 收货地址: addressinfo api [0.4s]
+收货地址 --> Server: 收货地址列表
+note over 收货地址: addressinfo api [0.4s]
+收货地址 --> Server: 新建收货地址
+
+
+聚合页 -> 选择门店: 选择门店
+
+note over 选择门店: citylist api
+选择门店 --> Server: 获取门店列表
+note over 选择门店: thirdorder/weLocation api
+选择门店 --> ECO: 获取门店列表
+note over 选择门店: restapi.amap.com/v3/geocode api
+选择门店 --> Server: 获取门店列表
+
+选择门店 -> 外卖: 进入对应门店的外卖
+
+聚合页 -> 我的劵: 商家配置入口：我的劵
+note over 我的劵: coupons api 【0.5s】
+我的劵 --> Server: 获取劵列表
+
+聚合页 -> 选择门店: 商家配置入口：充值
+选择门店 -> 支付页: 充值
+
+
+box "Welife"
+participant Server
+end box
+
+box "OSS"
+participant OSS
+end box
+
+box "ECO"
+participant ECO
+end box
+@enduml

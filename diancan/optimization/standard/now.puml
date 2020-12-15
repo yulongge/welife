@@ -1,0 +1,26 @@
+@startuml
+start
+:小程序;
+:聚合页;
+:收银;
+note left: 拉取桌台信息,是否有单
+if (桌台有单) then (拉取订单)
+  :收银;
+  :订单详情;
+  
+else (拉取聚合页配置)
+  :小程序后台;
+  :聚合页;
+endif
+:点餐;
+:收银;
+note left: 拉取菜品
+:下单;
+:收银;
+note right: 预结	 
+:支付完成;
+:收银;
+note left: 拉取订单详情
+:订单详情;
+end
+@enduml

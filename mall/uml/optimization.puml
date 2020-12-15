@@ -1,0 +1,21 @@
+@startuml
+start
+#HotPink:小程序-商城入口;
+#HotPink:小程序-商城首页;
+note left: 小程序实现商城首页
+
+:h5-商品详情页;
+note right: h5原有详情页
+
+#HotPink:小程序-购物车;
+note left: 小程序实现购物车
+
+:h5-提交订单(结算);
+note right: h5原有提交订单支付页面
+
+:支付-拉取小程序支付;
+note left: 原有逻辑
+:h5-订单详情页;
+note right: h5原有的订单列表及详情
+end
+@enduml
