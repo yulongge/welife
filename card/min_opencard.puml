@@ -1,0 +1,11 @@
+@startuml
+start
+:小程序;
+-> 小程序都是绑定开放平台的;
+:获取授权;
+:UnionID;
+
+:开卡;
+
+end
+@enduml
